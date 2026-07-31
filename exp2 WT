@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Student Portal</title>
+
+<style>
+    header{
+    background:linear-gradient(to right,#0b3c6f,#1976d2);
+    color:white;
+    padding:20px 40px;
+}
+
+.header-content{
+    display:flex;
+    align-items:center;
+}
+
+.logo{
+    width:150px;
+    height:150px;
+    margin-right:25px;
+    border-radius:10px;
+    background:white;
+    padding:5px;
+}
+
+.header-text{
+    flex:1;
+    text-align:center;
+}
+
+.header-text h1{
+    font-size:42px;
+    margin-bottom:10px;
+}
+
+.header-text h3{
+    color:#ffd700;
+    margin-bottom:10px;
+}
+
+.header-text p{
+    font-size:18px;
+}
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, Helvetica, sans-serif;
+}
+
+body{
+    background:#eef3f8;
+}
+
+header{
+    background:linear-gradient(to right,#0b3c6f,#1976d2);
+    color:white;
+    text-align:center;
+    padding:30px;
+}
+
+header h1{
+    font-size:45px;
+    margin-bottom:10px;
+}
+
+header h3{
+    color:#ffd700;
+    margin-bottom:10px;
+}
+
+nav{
+    background:#1565c0;
+    display:flex;
+    justify-content:center;
+}
+
+nav a{
+    color:white;
+    text-decoration:none;
+    padding:15px 35px;
+    font-weight:bold;
+}
+
+nav a:hover{
+    background:#0d47a1;
+}
+
+.container{
+    display:grid;
+    grid-template-columns:38% 60%;
+    gap:20px;
+    padding:20px;
+}
+
+.card{
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    box-shadow:0px 3px 10px rgba(0,0,0,.2);
+    margin-bottom:20px;
+}
+
+.card h2{
+    color:#0b3c6f;
+    margin-bottom:15px;
+}
+
+label{
+    display:block;
+    margin-top:10px;
+    font-weight:bold;
+}
+
+input,select,textarea{
+    width:100%;
+    padding:8px;
+    margin-top:5px;
+    border:1px solid #999;
+    border-radius:5px;
+}
+
+textarea{
+    resize:none;
+}
+
+input[type=radio],
+input[type=checkbox]{
+    width:auto;
+}
+
+button{
+    background:#1565c0;
+    color:white;
+    border:none;
+    padding:10px 20px;
+    margin-top:15px;
+    border-radius:5px;
+    cursor:pointer;
+}
+
+button:hover{
+    background:#0b3c6f;
+}
+
+img{
+    width:220px;
+    height:220px;
+    border-radius:50%;
+    display:block;
+    margin:auto;
+    object-fit:cover;
+    border:5px solid #1976d2;
+}
+
+video,
+audio,
+embed,
+iframe{
+    width:100%;
+    border-radius:8px;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    margin-top:10px;
+}
+
+table,th,td{
+    border:1px solid #666;
+}
+
+th{
+    background:#1976d2;
+    color:white;
+}
+
+th,td{
+    padding:10px;
+    text-align:center;
+}
+
+progress{
+    width:100%;
+    height:22px;
+}
+
+footer{
+    background:#0b3c6f;
+    color:white;
+    text-align:center;
+    padding:15px;
+    margin-top:20px;
+}
+</style>
+
+</head>
+<body>
+<header>
+
+    <img src="c:\Users\jasfe\OneDrive\Pictures\Screenshots\Screenshot 2026-07-31 070747.png" alt="Karunya Logo" class="logo">
+<h1>Karunya Institute of Technology and Sciences</h1>
+<h1>Students portal</h1>
+<h3>Register Number : URK24CS1175</h3>
+<p>HTML5 Form and Media Elements</p>
+</header>
+
+<nav>
+<a href="#">Home</a>
+<a href="#">About</a>
+<a href="#">Fees payment</a>
+<a href="#">Media</a>
+<a href="#">Contact</a>
+</nav>
+
+<div class="container">
+
+<!-- LEFT SIDE -->
+
+<div>
+
+<div class="card">
+
+
+</div>
+
+<div class="card">
+
+<h2>Student cource Registration</h2>
+
+<form>
+
+<label>Full Name</label>
+<input type="text">
+
+<label>Password</label>
+<input type="password">
+
+<label>Email</label>
+<input type="email">
+
+<label>Phone Number</label>
+<input type="tel">
+
+<label>Age</label>
+<input type="number">
+
+<label>Date of Birth</label>
+<input type="date">
+
+<label>Website</label>
+<input type="url">
+
+<label>Department</label>
+
+<select>
+<option>CSE</option>
+<option>ECE</option>
+<option>EEE</option>
+<option>AIDS</option>
+<option>IT</option>
+</select>
+
+<label>Gender</label>
+
+<input type="radio" name="gender"> Male
+<input type="radio" name="gender"> Female
+
+<br><br>
+
+<label>Skills</label>
+
+<input type="checkbox"> HTML
+<input type="checkbox"> CSS
+<input type="checkbox"> JavaScript
+<input type="checkbox"> Python
+
+<label>Address</label>
+
+<textarea rows="4"></textarea>
+
+<label>Learning Progress</label>
+
+<progress value="80" max="100"></progress>
+
+<br>
+
+<button>Submit</button>
+<button type="reset">Reset</button>
+
+</form>
+
+</div>
+
+</div>
+
+<!-- RIGHT SIDE -->
+
+<div>
+
+<div class="card">
+
+<h2>faculty </h2>
+
+<div class="card">
+
+<h2>Faculty Information</h2>
+
+<p><strong>Name:</strong> Jasfer Jeyan D</p>
+<br>
+
+<p><strong>Department:</strong> Computer Science and Engineering (CSE)</p>
+<br>
+
+<p><strong>Designation:</strong> Assistant Professor</p>
+<br>
+
+<p><strong>Email:</strong> jasfer@karunya.edu</p>
+<br>
+
+<p><strong>Contact:</strong> +91 6374854589</p>
+<br>
+
+<p>
+The faculty member is responsible for teaching Computer Science courses,
+guiding students in academic projects, conducting research activities,
+and mentoring students in their technical and professional development.
+</p>
+
+</div>
+
+<div class="card">
+
+<h2>Video</h2>
+
+<video controls>
+<source src="c:\Users\jasfe\Downloads\WhatsApp Video 2026-07-30 at 23.01.33.mp4" type="video/mp4">
+</video>
+
+</div>
+
+<div class="card">
+
+<h2>Karunya anthem</h2>
+
+<audio controls>
+<source src="audio.mp3" type="audio/mp3"
+</audio>
+
+</div>
+
+<div class="card">
+
+<h2>ACADEMIC REGULATIONS</h2>
+
+<embed src="c:\Users\jasfe\Downloads\karunya note.pdf">
+
+</div>
+
+<div class="card">
+
+<h2>College location</h2>
+
+<iframe src="https://www.google.com/maps?q=Karunya+Institute+of+Technology+and+Sciences&output=embed" height="250"></iframe>
+
+</div>
+
+</div>
+
+</div>
+
+<footer>
+
+<p>© 2026 Student Portal | HTML5 Form & Media Elements | URK24CS1175</p>
+
+</footer>
+
+</body>
+</html>
