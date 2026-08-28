@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Digital Clock - URK24CS1175</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial, sans-serif;
+            margin-top: 100px;
+            background-color: #f0f2f5;
+        }
+
+        .clock-container {
+            display: inline-block;
+            background-color: #1e1e24;
+            color: #ffffff;
+            padding: 20px 40px;
+            border-radius: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        }
+
+        #clock {
+            font-size: 48px;
+            font-weight: bold;
+            font-family: 'Courier New', Courier, monospace;
+            color: #00ffcc;
+        }
+    </style>
+</head>
+<body>
+    <h1>Digital Clock - URK24CS1175</h1>
+    
+    <!-- Wrapped the clock div inside a colored container -->
+    <div class="clock-container">
+        <div id="clock"></div>
+    </div>
+
+    <script>
+        function display() {
+            var d = new Date();
+            var h = String(d.getHours()).padStart(2, "0");
+            var m = String(d.getMinutes()).padStart(2, "0");
+            var s = String(d.getSeconds()).padStart(2, "0");
+            document.getElementById("clock").innerHTML = 
+                h + ":" + m + ":" + s;
+        }
+        display();
+        setInterval(display, 1000);
+    </script>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Dynamic Background - URK24CS1175</title>
+</head>
+<body>
+    <h1>Dynamic Background Colour - URK24CS1175</h1>
+    <p>The background colour changes every 5 seconds.</p>
+    <script>
+        function changeColor() {
+            var red = Math.floor(Math.random() * 256);
+            var green = Math.floor(Math.random() * 256);
+            var blue = Math.floor(Math.random() * 256);
+            var color = "rgb(" + red + "," + green + "," + blue + ")";
+            document.body.style.backgroundColor = color;
+        }
+        changeColor();
+        setInterval(changeColor, 5000);
+    </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Change Font Size
+    URK24CS1175</title>
+    <style>
+        body {
+            text-align: center;
+            font-family: Arial;
+            margin-top: 50px;
+        }
+        #para1 {
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Change Font Size
+    URK24CS1175</h1>
+    <p id="para1"
+       onmouseover="incSize()"
+       onmouseout="decSize()">
+       Move the cursor over this paragraph.
+    </p>
+    <script>
+        function incSize() {
+            document.getElementById("para1").style.fontSize = "30px";
+        }
+        function decSize() {
+            document.getElementById("para1").style.fontSize = "20px";
+        }
+    </script>
+</body>
+</html>
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <style>
+        body {
+            font-family: Arial;
+        }
+        /* Updated selector to match the image ID */
+        #ME {
+            position: relative;
+            width: 550px;
+            margin-top: 150px;
+        }
+    </style>
+</head>
+<body>
+    <h1>my pic - URK24CS1175</h1>
+    <button onclick="moveCar()">Move</button>
+    <button onclick="stopCar()">Stop</button>
+    <br>
+    <!-- Kept your ID as "ME" -->
+    <img id="ME" 
+         src="file:///C:/Users/jasfe/Downloads/Screenshot 2026-08-28 214028.png" 
+         alt="ME">
+
+    <script>
+        var position = 0;
+        var timer;
+
+        function moveCar() {
+            // Fix: Clear any active timer first so multiple clicks don't break it
+            clearInterval(timer);
+
+            timer = setInterval(function() {
+                position += 2;
+                // Fix: Changed "car" to "ME" to match your image ID
+                document.getElementById("ME").style.left = position + "px";
+            }, 20);
+        }
+
+        function stopCar() {
+            clearInterval(timer);
+        }
+    </script>
+</body>
+</html>
+
+
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Student Details - URK24CS1175</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #fcfcfc;
+            margin: 0;
+            padding: 40px;
+            color: #333;
+        }
+
+        h1 {
+            text-align: center;
+            color: #1a1a1a;
+            margin-bottom: 50px;
+        }
+
+        /* Displays cards in a clean grid layout */
+        #students {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+        }
+
+        /* Modern card layout replacing the heavy red border */
+        .student-card {
+            background-color: #ffffff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+            padding: 24px;
+            width: 280px;
+            border-top: 5px solid #3a86ff; /* Blue accent line */
+            text-align: left;
+        }
+
+        .student-name {
+            font-size: 20px;
+            font-weight: bold;
+            color: #2c3e50;
+            margin: 0 0 10px 0;
+        }
+
+        .student-info {
+            font-size: 14px;
+            margin: 6px 0;
+            color: #7f8c8d;
+        }
+
+        /* Styling for the category labels */
+        .badge {
+            display: inline-block;
+            margin-top: 15px;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .before-2000 {
+            /* Kept empty as per workspace placeholder */
+        }
+
+        .after-2000 {
+            background-color: #e63946;
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <h1>Student Details - URK24CS1175</h1>
+    <div id="students"></div>
+
+    <script>
+        var students = [
+            { name: "John", regno: "URK21CS1102", dob: 1997 },
+            { name: "Ram", regno: "URK24CS1175", dob: 2000 },
+            { name: "David", regno: "URK23CS1166", dob: 2006 }
+        ];
+
+        var htmlContent = "";
+
+        for (var i = 0; i < students.length; i++) {
+            var student = students[i];
+            var categoryText, badgeClass;
+
+            // Setting different badge colors and text based on conditions
+            if (student.dob < 2000) {
+                categoryText = "Born before 2000";
+                badgeClass = "before-2000";
+            } else {
+                categoryText = "Born after 2000";
+                badgeClass = "after-2000";
+            }
+
+            // Using template literals for highly readable template building
+            htmlContent += `
+                <div class="student-card">
+                    <p class="student-name">${student.name}</p>
+                    <p class="student-info"><b>Register No:</b> ${student.regno}</p>
+                    <p class="student-info"><b>Year of Birth:</b> ${student.dob}</p>
+                    <span class="badge ${badgeClass}">${categoryText}</span>
+                </div>
+            `;
+        }
+
+        document.getElementById("students").innerHTML = htmlContent;
+    </script>
+</body>
+</html>
