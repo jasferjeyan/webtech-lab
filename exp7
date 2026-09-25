@@ -1,0 +1,2920 @@
+task 1
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Body Workshop</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #dbeafe, #e0f2fe, #f1f5f9);
+            padding: 30px;
+        }
+
+        .container {
+            width: 1000px;
+            max-width: 100%;
+            margin: auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .header {
+            background: linear-gradient(90deg, #0f172a, #1e3a8a, #334155);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .header h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #dbeafe;
+            font-size: 15px;
+        }
+
+        .content {
+            padding: 35px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 26px;
+            color: #1e3a8a;
+            margin-bottom: 25px;
+        }
+
+        .workshop {
+            background: linear-gradient(180deg, #f8fafc, #eef2ff);
+            border-radius: 18px;
+            padding: 35px;
+            border: 2px solid #dbeafe;
+            margin-bottom: 30px;
+        }
+
+        .car-area {
+            height: 300px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(
+                to bottom,
+                #e0f2fe 0%,
+                #f8fafc 65%,
+                #cbd5e1 66%,
+                #94a3b8 100%
+            );
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 35px;
+        }
+
+        .road {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: #334155;
+        }
+
+        .road-line {
+            position: absolute;
+            bottom: 45px;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: repeating-linear-gradient(
+                90deg,
+                white 0px,
+                white 60px,
+                transparent 60px,
+                transparent 120px
+            );
+        }
+
+        .car {
+            position: relative;
+            width: 520px;
+            height: 190px;
+            z-index: 5;
+        }
+
+        .car-body {
+            position: absolute;
+            left: 55px;
+            bottom: 55px;
+            width: 410px;
+            height: 80px;
+            background: #2563eb;
+            border-radius: 45px 35px 18px 18px;
+            border: 5px solid #1e293b;
+            transition: 0.5s;
+            box-shadow: inset 0 -12px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        .front {
+            position: absolute;
+            right: -8px;
+            top: 15px;
+            width: 45px;
+            height: 45px;
+            background: #2563eb;
+            border-radius: 0 20px 15px 0;
+        }
+
+        .roof {
+            position: absolute;
+            left: 145px;
+            bottom: 125px;
+            width: 220px;
+            height: 75px;
+            background: #2563eb;
+            border: 5px solid #1e293b;
+            border-bottom: none;
+            border-radius: 100px 100px 0 0;
+            transition: 0.5s;
+            z-index: 2;
+        }
+
+        .window {
+            position: absolute;
+            bottom: 132px;
+            width: 90px;
+            height: 48px;
+            background: #bae6fd;
+            border: 4px solid #1e293b;
+            transition: 0.5s;
+            z-index: 3;
+        }
+
+        .window-left {
+            left: 165px;
+            border-radius: 65px 5px 5px 5px;
+        }
+
+        .window-right {
+            left: 265px;
+            border-radius: 5px 65px 5px 5px;
+        }
+
+        .window-divider {
+            position: absolute;
+            left: 257px;
+            bottom: 132px;
+            width: 5px;
+            height: 48px;
+            background: #1e293b;
+            z-index: 4;
+        }
+
+        .wheel {
+            position: absolute;
+            bottom: 20px;
+            width: 80px;
+            height: 80px;
+            background: #0f172a;
+            border-radius: 50%;
+            border: 8px solid #475569;
+            transition: 0.5s;
+            z-index: 10;
+        }
+
+        .wheel::after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #cbd5e1;
+            border-radius: 50%;
+            top: 17px;
+            left: 17px;
+            border: 5px solid #64748b;
+        }
+
+        .wheel-left {
+            left: 95px;
+        }
+
+        .wheel-right {
+            right: 95px;
+        }
+
+        .light {
+            position: absolute;
+            width: 18px;
+            height: 22px;
+            background: #fef08a;
+            border-radius: 50%;
+            right: 5px;
+            top: 30px;
+            box-shadow: 0 0 15px #fde047;
+            z-index: 10;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .control-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            text-align: center;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .control-card h3 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .color-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .color-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #cbd5e1;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .color-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .blue {
+            background: #2563eb;
+        }
+
+        .red {
+            background: #dc2626;
+        }
+
+        .green {
+            background: #16a34a;
+        }
+
+        .black {
+            background: #111827;
+        }
+
+        .yellow {
+            background: #eab308;
+        }
+
+        .white {
+            background: white;
+        }
+
+        .glass-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .glass-btn {
+            padding: 9px 15px;
+            border: 1px solid #94a3b8;
+            background: #f8fafc;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .glass-btn:hover {
+            background: #dbeafe;
+        }
+
+        .tyre-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tyre-btn {
+            padding: 9px 18px;
+            border: none;
+            background: #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .tyre-btn:hover {
+            background: #cbd5e1;
+        }
+
+        #reset {
+            display: block;
+            margin: 30px auto 0;
+            padding: 13px 45px;
+            border: none;
+            border-radius: 8px;
+            background: #dc2626;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #reset:hover {
+            background: #b91c1c;
+            transform: scale(1.05);
+        }
+
+        .status {
+            margin-top: 25px;
+            padding: 18px;
+            background: #eff6ff;
+            border-radius: 10px;
+            text-align: center;
+            color: #1e40af;
+            font-weight: bold;
+        }
+
+        .footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 18px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 800px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .car {
+                transform: scale(0.75);
+            }
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 10px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .car {
+                transform: scale(0.55);
+            }
+
+            .car-area {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+        <h1>CAR BODY WORKSHOP</h1>
+        <p>Customize Your Car With jQuery</p>
+    </div>
+
+    <div class="content">
+
+        <h2 class="title">Car Customization Studio</h2>
+
+        <div class="workshop">
+
+            <div class="car-area">
+
+                <div class="road"></div>
+                <div class="road-line"></div>
+
+                <div class="car">
+
+                    <div class="roof" id="roof"></div>
+
+                    <div class="window window-left" id="window1"></div>
+
+                    <div class="window window-right" id="window2"></div>
+
+                    <div class="window-divider"></div>
+
+                    <div class="car-body" id="carBody">
+                        <div class="front"></div>
+                        <div class="light"></div>
+                    </div>
+
+                    <div class="wheel wheel-left" id="wheel1"></div>
+
+                    <div class="wheel wheel-right" id="wheel2"></div>
+
+                </div>
+            </div>
+
+            <div class="controls">
+
+                <div class="control-card">
+                    <h3>Change Car Color</h3>
+
+                    <div class="color-buttons">
+                        <button class="color-btn blue" data-color="#2563eb"></button>
+                        <button class="color-btn red" data-color="#dc2626"></button>
+                        <button class="color-btn green" data-color="#16a34a"></button>
+                        <button class="color-btn black" data-color="#111827"></button>
+                        <button class="color-btn yellow" data-color="#eab308"></button>
+                        <button class="color-btn white" data-color="#ffffff"></button>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <h3>Change Glass Tint</h3>
+
+                    <div class="glass-buttons">
+                        <button class="glass-btn" data-glass="#bae6fd">Light</button>
+                        <button class="glass-btn" data-glass="#64748b">Grey</button>
+                        <button class="glass-btn" data-glass="#1e293b">Dark</button>
+                        <button class="glass-btn" data-glass="#020617">Black</button>
+                    </div>
+                </div>
+
+                <div class="control-card">
+                    <h3>Change Tyre Size</h3>
+
+                    <div class="tyre-buttons">
+                        <button class="tyre-btn" data-size="60px">Small</button>
+                        <button class="tyre-btn" data-size="80px">Medium</button>
+                        <button class="tyre-btn" data-size="100px">Large</button>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="status" id="status">
+                Your car is ready for customization.
+            </div>
+
+            <button id="reset">Reset Car</button>
+
+        </div>
+    </div>
+
+    <div class="footer">
+        Practicum 7 | Working with jQuery
+    </div>
+
+</div>
+
+<script>
+$(document).ready(function() {
+
+    $(".color-btn").click(function() {
+
+        let color = $(this).data("color");
+
+        $("#carBody").css("background-color", color);
+        $("#roof").css("background-color", color);
+        $(".front").css("background-color", color);
+
+        $("#status").text(
+            "Car color has been changed successfully."
+        );
+    });
+
+
+    $(".glass-btn").click(function() {
+
+        let glassColor = $(this).data("glass");
+
+        $("#window1").css("background-color", glassColor);
+        $("#window2").css("background-color", glassColor);
+
+        $("#status").text(
+            "Glass tint has been changed successfully."
+        );
+    });
+
+
+    $(".tyre-btn").click(function() {
+
+        let size = $(this).data("size");
+
+        $("#wheel1").css({
+            "width": size,
+            "height": size
+        });
+
+        $("#wheel2").css({
+            "width": size,
+            "height": size
+        });
+
+        $("#status").text(
+            "Tyre size has been changed successfully."
+        );
+    });
+
+
+    $("#reset").click(function() {
+
+        $("#carBody").css("background-color", "#2563eb");
+        $("#roof").css("background-color", "#2563eb");
+        $(".front").css("background-color", "#2563eb");
+
+        $("#window1").css("background-color", "#bae6fd");
+        $("#window2").css("background-color", "#bae6fd");
+
+        $("#wheel1").css({
+            "width": "80px",
+            "height": "80px"
+        });
+
+        $("#wheel2").css({
+            "width": "80px",
+            "height": "80px"
+        });
+
+        $("#status").text(
+            "Car has been reset to the original design."
+        );
+    });
+
+});
+</script>
+
+</body>
+</html>
+```
+task2
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cake Shop</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #fff1f2, #fdf2f8, #fce7f3);
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .container {
+            width: 1000px;
+            max-width: 100%;
+            margin: auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.18);
+        }
+
+        .header {
+            background: linear-gradient(90deg, #b91c1c, #dc2626, #be123c);
+            color: white;
+            text-align: center;
+            padding: 28px;
+        }
+
+        .header h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 15px;
+            color: #ffe4e6;
+        }
+
+        .content {
+            padding: 35px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 25px;
+            color: #9f1239;
+            margin-bottom: 25px;
+        }
+
+        .cake-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+
+        .cake-card {
+            background: #fff;
+            border-radius: 15px;
+            overflow: hidden;
+            border: 1px solid #fecdd3;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.12);
+            transition: 0.3s;
+        }
+
+        .cake-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.18);
+        }
+
+        .cake-image {
+            height: 170px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 75px;
+            background: #fff1f2;
+        }
+
+        .cake-info {
+            padding: 18px;
+            text-align: center;
+        }
+
+        .cake-info h3 {
+            color: #881337;
+            margin-bottom: 8px;
+            font-size: 17px;
+        }
+
+        .price {
+            font-size: 18px;
+            color: #dc2626;
+            font-weight: bold;
+        }
+
+        .order-section {
+            background: #fff7f8;
+            border: 2px solid #fecdd3;
+            border-radius: 18px;
+            padding: 30px;
+        }
+
+        .order-title {
+            text-align: center;
+            font-size: 27px;
+            color: #be123c;
+            margin-bottom: 25px;
+        }
+
+        .order-row {
+            display: grid;
+            grid-template-columns: 1fr 150px 150px;
+            gap: 15px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .cake-name {
+            font-weight: bold;
+            color: #374151;
+            font-size: 16px;
+        }
+
+        .cake-price {
+            color: #dc2626;
+            font-weight: bold;
+            text-align: center;
+        }
+
+        .quantity {
+            width: 100%;
+            padding: 11px;
+            border: 2px solid #fda4af;
+            border-radius: 7px;
+            text-align: center;
+            font-size: 16px;
+        }
+
+        .quantity:focus {
+            outline: none;
+            border-color: #e11d48;
+        }
+
+        #placeOrder {
+            display: block;
+            margin: 30px auto 20px;
+            padding: 14px 45px;
+            border: none;
+            border-radius: 8px;
+            background: linear-gradient(90deg, #dc2626, #be123c);
+            color: white;
+            font-size: 17px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #placeOrder:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 15px rgba(190, 24, 93, 0.3);
+        }
+
+        .total-section {
+            border-top: 3px solid #e5e7eb;
+            margin-top: 20px;
+            padding-top: 25px;
+            text-align: center;
+        }
+
+        .total-section h2 {
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        #totalPrice {
+            font-size: 35px;
+            color: #16a34a;
+            font-weight: bold;
+        }
+
+        #orderMessage {
+            margin-top: 10px;
+            color: #64748b;
+            font-size: 15px;
+        }
+
+        #success {
+            display: none;
+            margin-top: 20px;
+            padding: 15px;
+            background: #dcfce7;
+            color: #166534;
+            text-align: center;
+            border-radius: 8px;
+            font-weight: bold;
+        }
+
+        .footer {
+            background: #881337;
+            color: #ffe4e6;
+            text-align: center;
+            padding: 18px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 800px) {
+            .cake-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 550px) {
+            .cake-container {
+                grid-template-columns: 1fr;
+            }
+
+            .order-row {
+                grid-template-columns: 1fr;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <h1>🍰 CAKE SHOP</h1>
+            <p>Delicious Cakes for Every Celebration</p>
+        </div>
+
+        <div class="content">
+
+            <h2 class="section-title">Our Special Cakes</h2>
+
+            <div class="cake-container">
+
+                <div class="cake-card">
+                    <div class="cake-image">🎂</div>
+                    <div class="cake-info">
+                        <h3>Color Cake</h3>
+                        <div class="price">₹350</div>
+                    </div>
+                </div>
+
+                <div class="cake-card">
+                    <div class="cake-image">🎂</div>
+                    <div class="cake-info">
+                        <h3>Brown Cake</h3>
+                        <div class="price">₹220</div>
+                    </div>
+                </div>
+
+                <div class="cake-card">
+                    <div class="cake-image">🍩</div>
+                    <div class="cake-info">
+                        <h3>Milky Cake</h3>
+                        <div class="price">₹250</div>
+                    </div>
+                </div>
+
+                <div class="cake-card">
+                    <div class="cake-image">🍰</div>
+                    <div class="cake-info">
+                        <h3>Black Forest Cake</h3>
+                        <div class="price">₹290</div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="order-section">
+
+                <h2 class="order-title">🎂 Order Cake</h2>
+
+                <div class="order-row">
+                    <div class="cake-name">Cake Name</div>
+                    <div class="cake-price">Price</div>
+                    <div class="cake-price">Quantity</div>
+                </div>
+
+                <div class="order-row">
+                    <div class="cake-name">Color Cake</div>
+                    <div class="cake-price">₹350</div>
+                    <input type="number" class="quantity" id="colorQuantity" value="0" min="0">
+                </div>
+
+                <div class="order-row">
+                    <div class="cake-name">Brown Cake</div>
+                    <div class="cake-price">₹220</div>
+                    <input type="number" class="quantity" id="brownQuantity" value="0" min="0">
+                </div>
+
+                <div class="order-row">
+                    <div class="cake-name">Milky Cake</div>
+                    <div class="cake-price">₹250</div>
+                    <input type="number" class="quantity" id="milkyQuantity" value="0" min="0">
+                </div>
+
+                <div class="order-row">
+                    <div class="cake-name">Black Forest Cake</div>
+                    <div class="cake-price">₹290</div>
+                    <input type="number" class="quantity" id="blackQuantity" value="0" min="0">
+                </div>
+
+                <button id="placeOrder">Place Order</button>
+
+                <div class="total-section">
+                    <h2>Purchase Order Bill</h2>
+
+                    <div id="totalPrice">₹0.00</div>
+
+                    <p id="orderMessage">
+                        Select cake quantities and place your order.
+                    </p>
+                </div>
+
+                <div id="success">
+                    Your cake order has been calculated successfully!
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="footer">
+            Practicum 7 | Working with jQuery
+        </div>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            $("#placeOrder").click(function () {
+
+                let color = parseInt($("#colorQuantity").val()) || 0;
+                let brown = parseInt($("#brownQuantity").val()) || 0;
+                let milky = parseInt($("#milkyQuantity").val()) || 0;
+                let black = parseInt($("#blackQuantity").val()) || 0;
+
+                let colorPrice = 350;
+                let brownPrice = 220;
+                let milkyPrice = 250;
+                let blackPrice = 290;
+
+                let colorTotal = color * colorPrice;
+                let brownTotal = brown * brownPrice;
+                let milkyTotal = milky * milkyPrice;
+                let blackTotal = black * blackPrice;
+
+                let total = colorTotal + brownTotal + milkyTotal + blackTotal;
+
+                $("#totalPrice").text("₹" + total.toFixed(2));
+
+                $("#orderMessage").text(
+                    "Your total purchase amount is ₹" + total.toFixed(2)
+                );
+
+                $("#success").fadeIn();
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>
+
+task3
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Body Workshop</title>
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            background: linear-gradient(135deg, #dbeafe, #e0f2fe, #f1f5f9);
+            padding: 30px;
+        }
+
+        .container {
+            width: 1000px;
+            max-width: 100%;
+            margin: auto;
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.20);
+        }
+
+        .header {
+            background: linear-gradient(90deg, #0f172a, #1e3a8a, #334155);
+            color: white;
+            text-align: center;
+            padding: 30px;
+        }
+
+        .header h1 {
+            font-size: 34px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: #dbeafe;
+            font-size: 15px;
+        }
+
+        .content {
+            padding: 35px;
+        }
+
+        .title {
+            text-align: center;
+            font-size: 26px;
+            color: #1e3a8a;
+            margin-bottom: 25px;
+        }
+
+        .workshop {
+            background: linear-gradient(180deg, #f8fafc, #eef2ff);
+            border-radius: 18px;
+            padding: 35px;
+            border: 2px solid #dbeafe;
+            margin-bottom: 30px;
+        }
+
+        .car-area {
+            height: 300px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(
+                to bottom,
+                #e0f2fe 0%,
+                #f8fafc 65%,
+                #cbd5e1 66%,
+                #94a3b8 100%
+            );
+            border-radius: 15px;
+            overflow: hidden;
+            margin-bottom: 35px;
+        }
+
+        .road {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 100px;
+            background: #334155;
+        }
+
+        .road-line {
+            position: absolute;
+            bottom: 45px;
+            width: 100%;
+            height: 5px;
+            background: repeating-linear-gradient(
+                90deg,
+                white 0px,
+                white 60px,
+                transparent 60px,
+                transparent 120px
+            );
+        }
+
+        .car {
+            position: relative;
+            width: 520px;
+            height: 190px;
+            z-index: 5;
+        }
+
+        .car-body {
+            position: absolute;
+            left: 55px;
+            bottom: 55px;
+            width: 410px;
+            height: 80px;
+            background: #2563eb;
+            border-radius: 45px 35px 18px 18px;
+            border: 5px solid #1e293b;
+            transition: 0.5s;
+            box-shadow: inset 0 -12px 0 rgba(0, 0, 0, 0.12);
+        }
+
+        .front {
+            position: absolute;
+            right: -8px;
+            top: 15px;
+            width: 45px;
+            height: 45px;
+            background: #2563eb;
+            border-radius: 0 20px 15px 0;
+        }
+
+        .roof {
+            position: absolute;
+            left: 145px;
+            bottom: 125px;
+            width: 220px;
+            height: 75px;
+            background: #2563eb;
+            border: 5px solid #1e293b;
+            border-bottom: none;
+            border-radius: 100px 100px 0 0;
+            transition: 0.5s;
+            z-index: 2;
+        }
+
+        .window {
+            position: absolute;
+            bottom: 132px;
+            width: 90px;
+            height: 48px;
+            background: #bae6fd;
+            border: 4px solid #1e293b;
+            transition: 0.5s;
+            z-index: 3;
+        }
+
+        .window-left {
+            left: 165px;
+            border-radius: 65px 5px 5px 5px;
+        }
+
+        .window-right {
+            left: 265px;
+            border-radius: 5px 65px 5px 5px;
+        }
+
+        .window-divider {
+            position: absolute;
+            left: 257px;
+            bottom: 132px;
+            width: 5px;
+            height: 48px;
+            background: #1e293b;
+            z-index: 4;
+        }
+
+        .wheel {
+            position: absolute;
+            bottom: 20px;
+            width: 80px;
+            height: 80px;
+            background: #0f172a;
+            border-radius: 50%;
+            border: 8px solid #475569;
+            transition: 0.5s;
+            z-index: 10;
+        }
+
+        .wheel::after {
+            content: "";
+            position: absolute;
+            width: 30px;
+            height: 30px;
+            background: #cbd5e1;
+            border-radius: 50%;
+            top: 17px;
+            left: 17px;
+            border: 5px solid #64748b;
+        }
+
+        .wheel-left {
+            left: 95px;
+        }
+
+        .wheel-right {
+            right: 95px;
+        }
+
+        .light {
+            position: absolute;
+            width: 18px;
+            height: 22px;
+            background: #fef08a;
+            border-radius: 50%;
+            right: 5px;
+            top: 30px;
+            box-shadow: 0 0 15px #fde047;
+            z-index: 10;
+        }
+
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+
+        .control-card {
+            background: white;
+            padding: 22px;
+            border-radius: 12px;
+            border: 2px solid #e2e8f0;
+            text-align: center;
+            box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+        }
+
+        .control-card h3 {
+            color: #1e3a8a;
+            margin-bottom: 15px;
+            font-size: 18px;
+        }
+
+        .color-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .color-btn {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            border: 3px solid white;
+            box-shadow: 0 0 0 2px #cbd5e1;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .color-btn:hover {
+            transform: scale(1.15);
+        }
+
+        .blue {
+            background: #2563eb;
+        }
+
+        .red {
+            background: #dc2626;
+        }
+
+        .green {
+            background: #16a34a;
+        }
+
+        .black {
+            background: #111827;
+        }
+
+        .yellow {
+            background: #eab308;
+        }
+
+        .white {
+            background: white;
+        }
+
+        .glass-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .glass-btn {
+            padding: 9px 15px;
+            border: 1px solid #94a3b8;
+            background: #f8fafc;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .glass-btn:hover {
+            background: #dbeafe;
+        }
+
+        .tyre-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tyre-btn {
+            padding: 9px 18px;
+            border: none;
+            background: #e2e8f0;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .tyre-btn:hover {
+            background: #cbd5e1;
+        }
+
+        #reset {
+            display: block;
+            margin: 30px auto 0;
+            padding: 13px 45px;
+            border: none;
+            border-radius: 8px;
+            background: #dc2626;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        #reset:hover {
+            background: #b91c1c;
+            transform: scale(1.05);
+        }
+
+        .status {
+            margin-top: 25px;
+            padding: 18px;
+            background: #eff6ff;
+            border-radius: 10px;
+            text-align: center;
+            color: #1e40af;
+            font-weight: bold;
+        }
+
+        .footer {
+            background: #0f172a;
+            color: #cbd5e1;
+            text-align: center;
+            padding: 18px;
+            font-size: 13px;
+        }
+
+        @media (max-width: 800px) {
+            .controls {
+                grid-template-columns: 1fr;
+            }
+
+            .car {
+                transform: scale(0.75);
+            }
+        }
+
+        @media (max-width: 500px) {
+            body {
+                padding: 10px;
+            }
+
+            .content {
+                padding: 15px;
+            }
+
+            .car {
+                transform: scale(0.55);
+            }
+
+            .car-area {
+                height: 250px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <div class="header">
+            <h1>🚗 CAR BODY WORKSHOP</h1>
+            <p>Customize Your Car With jQuery</p>
+        </div>
+
+        <div class="content">
+
+            <h2 class="title">Car Customization Studio</h2>
+
+            <div class="workshop">
+
+                <div class="car-area">
+
+                    <div class="road"></div>
+                    <div class="road-line"></div>
+
+                    <div class="car">
+
+                        <div class="roof" id="roof"></div>
+
+                        <div class="window window-left" id="window1"></div>
+
+                        <div class="window window-right" id="window2"></div>
+
+                        <div class="window-divider"></div>
+
+                        <div class="car-body" id="carBody">
+                            <div class="front"></div>
+                            <div class="light"></div>
+                        </div>
+
+                        <div class="wheel wheel-left" id="wheel1"></div>
+                        <div class="wheel wheel-right" id="wheel2"></div>
+
+                    </div>
+                </div>
+
+                <div class="controls">
+
+                    <div class="control-card">
+                        <h3>🎨 Change Car Color</h3>
+
+                        <div class="color-buttons">
+
+                            <button class="color-btn blue"
+                                data-color="#2563eb"></button>
+
+                            <button class="color-btn red"
+                                data-color="#dc2626"></button>
+
+                            <button class="color-btn green"
+                                data-color="#16a34a"></button>
+
+                            <button class="color-btn black"
+                                data-color="#111827"></button>
+
+                            <button class="color-btn yellow"
+                                data-color="#eab308"></button>
+
+                            <button class="color-btn white"
+                                data-color="#ffffff"></button>
+
+                        </div>
+                    </div>
+
+                    <div class="control-card">
+                        <h3>🪟 Change Glass Tint</h3>
+
+                        <div class="glass-buttons">
+
+                            <button class="glass-btn"
+                                data-glass="#bae6fd">
+                                Light
+                            </button>
+
+                            <button class="glass-btn"
+                                data-glass="#64748b">
+                                Grey
+                            </button>
+
+                            <button class="glass-btn"
+                                data-glass="#1e293b">
+                                Dark
+                            </button>
+
+                            <button class="glass-btn"
+                                data-glass="#020617">
+                                Black
+                            </button>
+
+                        </div>
+                    </div>
+
+                    <div class="control-card">
+                        <h3>🛞 Change Tyre Size</h3>
+
+                        <div class="tyre-buttons">
+
+                            <button class="tyre-btn"
+                                data-size="60px">
+                                Small
+                            </button>
+
+                            <button class="tyre-btn"
+                                data-size="80px">
+                                Medium
+                            </button>
+
+                            <button class="tyre-btn"
+                                data-size="100px">
+                                Large
+                            </button>
+
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="status" id="status">
+                    Your car is ready for customization.
+                </div>
+
+                <button id="reset">
+                    Reset Car
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="footer">
+            Practicum 7 | Working with jQuery
+        </div>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            /* Car Color */
+            $(".color-btn").click(function () {
+
+                let color = $(this).data("color");
+
+                $("#carBody").css("background-color", color);
+                $("#roof").css("background-color", color);
+                $(".front").css("background-color", color);
+
+                $("#status").text(
+                    "Car color has been changed successfully."
+                );
+            });
+
+            /* Glass Tint */
+            $(".glass-btn").click(function () {
+
+                let glassColor = $(this).data("glass");
+
+                $("#window1").css("background-color", glassColor);
+                $("#window2").css("background-color", glassColor);
+
+                $("#status").text(
+                    "Glass tint has been changed successfully."
+                );
+            });
+
+            /* Tyre Size */
+            $(".tyre-btn").click(function () {
+
+                let size = $(this).data("size");
+
+                $("#wheel1").css({
+                    "width": size,
+                    "height": size
+                });
+
+                $("#wheel2").css({
+                    "width": size,
+                    "height": size
+                });
+
+                $("#status").text(
+                    "Tyre size has been changed successfully."
+                );
+            });
+
+            /* Reset */
+            $("#reset").click(function () {
+
+                $("#carBody").css(
+                    "background-color",
+                    "#2563eb"
+                );
+
+                $("#roof").css(
+                    "background-color",
+                    "#2563eb"
+                );
+
+                $(".front").css(
+                    "background-color",
+                    "#2563eb"
+                );
+
+                $("#window1").css(
+                    "background-color",
+                    "#bae6fd"
+                );
+
+                $("#window2").css(
+                    "background-color",
+                    "#bae6fd"
+                );
+
+                $("#wheel1").css({
+                    "width": "80px",
+                    "height": "80px"
+                });
+
+                $("#wheel2").css({
+                    "width": "80px",
+                    "height": "80px"
+                });
+
+                $("#status").text(
+                    "Your car has been reset successfully."
+                );
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>
+```
+
+task4
+```html
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #dbeafe, #f0f9ff);
+            min-height: 100vh;
+            padding: 40px;
+        }
+
+        .container {
+            width: 800px;
+            max-width: 100%;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+            text-align: center;
+        }
+
+        h1 {
+            color: #1e3a8a;
+            margin-bottom: 25px;
+        }
+
+        #productCard {
+            width: 450px;
+            max-width: 100%;
+            margin: auto;
+            padding: 25px;
+            background: #eff6ff;
+            border: 2px solid #3b82f6;
+            border-radius: 15px;
+            text-align: left;
+        }
+
+        #productCard h2 {
+            color: #1e40af;
+            margin-bottom: 15px;
+        }
+
+        .price {
+            color: #dc2626;
+            font-size: 22px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .category {
+            color: #475569;
+            margin-bottom: 10px;
+        }
+
+        .stock {
+            color: #16a34a;
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+
+        .description {
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        .buttons {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 10px 18px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #message {
+            margin-top: 20px;
+            color: #166534;
+            font-weight: bold;
+            min-height: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Product Details</h1>
+
+        <div id="productCard">
+
+            <h2>Wireless Headphones</h2>
+
+            <div class="price">₹2,499</div>
+
+            <div class="category">
+                Category: Electronics
+            </div>
+
+            <div class="stock">
+                Stock Status: In Stock
+            </div>
+
+            <div class="description">
+                High-quality wireless headphones with clear sound,
+                comfortable ear cushions, and long battery life.
+            </div>
+
+        </div>
+
+        <div class="buttons">
+
+            <button id="hideBtn">Hide</button>
+
+            <button id="showBtn">Show</button>
+
+            <button id="fadeOutBtn">Fade Out</button>
+
+            <button id="fadeInBtn">Fade In</button>
+
+            <button id="slideUpBtn">Slide Up</button>
+
+            <button id="slideDownBtn">Slide Down</button>
+
+            <button id="animateBtn">Animate</button>
+
+            <button id="stopBtn">Stop</button>
+
+            <button id="callbackBtn">Callback</button>
+
+            <button id="chainBtn">Chaining</button>
+
+        </div>
+
+        <div id="message"></div>
+
+    </div>
+
+    <script>
+        $(document).ready(function () {
+
+            /* 1. Hide */
+            $("#hideBtn").click(function () {
+                $("#productCard").hide();
+            });
+
+            /* 2. Show */
+            $("#showBtn").click(function () {
+                $("#productCard").show();
+            });
+
+            /* 3. Fade Out */
+            $("#fadeOutBtn").click(function () {
+                $("#productCard").fadeOut(1000);
+            });
+
+            /* 4. Fade In */
+            $("#fadeInBtn").click(function () {
+                $("#productCard").fadeIn(1000);
+            });
+
+            /* 5. Slide Up */
+            $("#slideUpBtn").click(function () {
+                $("#productCard").slideUp(1000);
+            });
+
+            /* 6. Slide Down */
+            $("#slideDownBtn").click(function () {
+                $("#productCard").slideDown(1000);
+            });
+
+            /* 7. Animate */
+            $("#animateBtn").click(function () {
+
+                $("#productCard").animate({
+                    width: "600px",
+                    padding: "40px",
+                    opacity: 0.7
+                }, 1500);
+
+            });
+
+            /* 8. Stop */
+            $("#stopBtn").click(function () {
+                $("#productCard").stop();
+            });
+
+            /* 9. Callback */
+            $("#callbackBtn").click(function () {
+
+                $("#message").text("");
+
+                $("#productCard").fadeOut(800, function () {
+
+                    $("#message").text(
+                        "Animation completed successfully"
+                    );
+
+                });
+
+            });
+
+            /* 10. Chaining */
+            $("#chainBtn").click(function () {
+
+                $("#message").text("");
+
+                $("#productCard")
+                    .slideUp(500)
+                    .slideDown(500)
+                    .fadeTo(500, 0.5)
+                    .fadeTo(500, 1)
+                    .animate({
+                        width: "450px"
+                    }, 500);
+
+            });
+
+        });
+    </script>
+
+</body>
+
+</html>
+```
+task5
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Employee Management Dashboard</title>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #dbeafe, #f0f9ff);
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .container {
+            width: 950px;
+            max-width: 100%;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 25px;
+        }
+
+        .form-box {
+            background: #eff6ff;
+            padding: 20px;
+            border-radius: 12px;
+            margin-bottom: 25px;
+        }
+
+        .form-box label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: bold;
+            color: #334155;
+        }
+
+        .form-box input {
+            width: 100%;
+            padding: 11px;
+            margin-bottom: 15px;
+            border: 1px solid #94a3b8;
+            border-radius: 6px;
+            font-size: 15px;
+        }
+
+        .buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 11px 18px;
+            border: none;
+            border-radius: 6px;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #updateBtn {
+            background: #16a34a;
+        }
+
+        #deleteBtn {
+            background: #dc2626;
+        }
+
+        #clearBtn {
+            background: #64748b;
+        }
+
+        #highlightBtn {
+            background: #9333ea;
+        }
+
+        #styleBtn {
+            background: #ea580c;
+        }
+
+        #dimensionBtn {
+            background: #0891b2;
+        }
+
+        .table-box {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+
+        th {
+            background: #1e40af;
+            color: white;
+            padding: 13px;
+        }
+
+        td {
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            text-align: center;
+        }
+
+        tr:hover {
+            background: #e0f2fe;
+            cursor: pointer;
+        }
+
+        .selected {
+            background: #fde68a !important;
+            font-weight: bold;
+        }
+
+        #message {
+            margin-top: 20px;
+            padding: 12px;
+            text-align: center;
+            color: #166534;
+            font-weight: bold;
+            min-height: 20px;
+        }
+
+        #dimensions {
+            margin-top: 15px;
+            text-align: center;
+            color: #0369a1;
+            font-weight: bold;
+        }
+
+        .info-panel {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f8fafc;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+        }
+
+        .info-panel h2 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>👨‍💼 Employee Management Dashboard</h1>
+
+        <p class="subtitle">
+            Manage employee information dynamically using jQuery
+        </p>
+
+        <div class="form-box">
+
+            <label>Employee ID</label>
+            <input type="text" id="empId" placeholder="Enter Employee ID">
+
+            <label>Employee Name</label>
+            <input type="text" id="empName" placeholder="Enter Employee Name">
+
+            <label>Department</label>
+            <input type="text" id="department" placeholder="Enter Department">
+
+            <div class="buttons">
+
+                <button id="addBtn">Add Employee</button>
+
+                <button id="updateBtn">
+                    Update Employee
+                </button>
+
+                <button id="deleteBtn">
+                    Remove Employee
+                </button>
+
+                <button id="clearBtn">
+                    Clear
+                </button>
+
+                <button id="highlightBtn">
+                    Highlight Selected
+                </button>
+
+                <button id="styleBtn">
+                    Change Panel Appearance
+                </button>
+
+                <button id="dimensionBtn">
+                    Show Table Dimensions
+                </button>
+
+            </div>
+
+        </div>
+
+        <div class="table-box">
+
+            <table id="employeeTable">
+
+                <thead>
+                    <tr>
+                        <th>Employee ID</th>
+                        <th>Employee Name</th>
+                        <th>Department</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+
+                    <tr>
+                        <td>EMP101</td>
+                        <td>Arun</td>
+                        <td>IT</td>
+                    </tr>
+
+                    <tr>
+                        <td>EMP102</td>
+                        <td>Priya</td>
+                        <td>HR</td>
+                    </tr>
+
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div id="dimensions"></div>
+
+        <div class="info-panel" id="infoPanel">
+
+            <h2>Employee Information Panel</h2>
+
+            <p>
+                Select an employee from the table to edit or remove
+                the employee information.
+            </p>
+
+        </div>
+
+        <div id="message"></div>
+
+    </div>
+
+    <script>
+
+        $(document).ready(function () {
+
+            var selectedRow = null;
+
+            // Add Employee
+            $("#addBtn").click(function () {
+
+                var id = $("#empId").val().trim();
+                var name = $("#empName").val().trim();
+                var department = $("#department").val().trim();
+
+                if (id === "" || name === "" || department === "") {
+                    $("#message").text("Please enter all employee details.");
+                    return;
+                }
+
+                var row = $("<tr>");
+
+                row.append("<td>" + id + "</td>");
+                row.append("<td>" + name + "</td>");
+                row.append("<td>" + department + "</td>");
+
+                $("#employeeTable tbody").append(row);
+
+                $("#message").text("Employee added successfully.");
+
+                $("#empId").val("");
+                $("#empName").val("");
+                $("#department").val("");
+
+                updateDimensions();
+            });
+
+
+            // Select Employee
+            $("#employeeTable tbody").on("click", "tr", function () {
+
+                $("#employeeTable tbody tr").removeClass("selected");
+
+                $(this).addClass("selected");
+
+                selectedRow = this;
+
+                $("#empId").val($(this).find("td:eq(0)").text());
+                $("#empName").val($(this).find("td:eq(1)").text());
+                $("#department").val($(this).find("td:eq(2)").text());
+
+                $("#message").text("Employee selected for editing.");
+
+            });
+
+
+            // Update Employee
+            $("#updateBtn").click(function () {
+
+                if (selectedRow === null) {
+                    $("#message").text("Select an employee first.");
+                    return;
+                }
+
+                var id = $("#empId").val().trim();
+                var name = $("#empName").val().trim();
+                var department = $("#department").val().trim();
+
+                if (id === "" || name === "" || department === "") {
+                    $("#message").text("Please enter all employee details.");
+                    return;
+                }
+
+                $(selectedRow).find("td:eq(0)").text(id);
+                $(selectedRow).find("td:eq(1)").text(name);
+                $(selectedRow).find("td:eq(2)").text(department);
+
+                $("#message").text("Employee information updated successfully.");
+
+                updateDimensions();
+            });
+
+
+            // Remove Employee
+            $("#deleteBtn").click(function () {
+
+                if (selectedRow === null) {
+                    $("#message").text("Select an employee to remove.");
+                    return;
+                }
+
+                $(selectedRow).remove();
+
+                selectedRow = null;
+
+                $("#empId").val("");
+                $("#empName").val("");
+                $("#department").val("");
+
+                $("#message").text("Employee removed successfully.");
+
+                updateDimensions();
+            });
+
+
+            // Clear Form
+            $("#clearBtn").click(function () {
+
+                $("#empId").val("");
+                $("#empName").val("");
+                $("#department").val("");
+
+                $("#employeeTable tbody tr").removeClass("selected");
+
+                selectedRow = null;
+
+                $("#message").text("Form cleared.");
+            });
+
+
+            // Highlight Selected Employee
+            $("#highlightBtn").click(function () {
+
+                if (selectedRow === null) {
+                    $("#message").text("Select an employee first.");
+                    return;
+                }
+
+                $("#employeeTable tbody tr").removeClass("selected");
+
+                $(selectedRow).addClass("selected");
+
+                $("#message").text("Selected employee highlighted.");
+
+            });
+
+
+            // Change Information Panel Appearance
+            $("#styleBtn").click(function () {
+
+                $("#infoPanel").css({
+                    "background": "#dbeafe",
+                    "border": "3px solid #2563eb",
+                    "border-radius": "20px",
+                    "padding": "30px",
+                    "box-shadow": "0 5px 20px rgba(37, 99, 235, 0.3)"
+                });
+
+                $("#message").text(
+                    "Information panel appearance changed."
+                );
+
+            });
+
+
+            // Display Table Dimensions
+            $("#dimensionBtn").click(function () {
+
+                updateDimensions();
+
+            });
+
+
+            function updateDimensions() {
+
+                var width = $("#employeeTable").outerWidth();
+                var height = $("#employeeTable").outerHeight();
+
+                $("#dimensions").text(
+                    "Table Dimensions: Width = " +
+                    width +
+                    "px, Height = " +
+                    height +
+                    "px"
+                );
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
+
+task6
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Employee Organization Explorer</title>
+
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #dbeafe, #f8fafc);
+            min-height: 100vh;
+            padding: 30px;
+        }
+
+        .container {
+            max-width: 950px;
+            margin: auto;
+            background: white;
+            padding: 30px;
+            border-radius: 18px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+        }
+
+        h1 {
+            text-align: center;
+            color: #1e3a8a;
+            margin-bottom: 25px;
+        }
+
+        .select-box {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .select-box label {
+            font-weight: bold;
+            color: #334155;
+            margin-right: 10px;
+        }
+
+        select {
+            padding: 10px 15px;
+            border: 2px solid #2563eb;
+            border-radius: 7px;
+            font-size: 15px;
+        }
+
+        .organization {
+            background: #f8fafc;
+            padding: 20px;
+            border-radius: 15px;
+            border: 2px solid #cbd5e1;
+        }
+
+        .project {
+            background: #dbeafe;
+            padding: 20px;
+            border: 2px solid #2563eb;
+            border-radius: 12px;
+        }
+
+        .project h2 {
+            color: #1e40af;
+            margin-bottom: 20px;
+        }
+
+        .teams {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .team {
+            flex: 1;
+            min-width: 250px;
+            background: white;
+            padding: 18px;
+            border: 2px solid #93c5fd;
+            border-radius: 12px;
+        }
+
+        .team h3 {
+            color: #2563eb;
+            margin-bottom: 12px;
+        }
+
+        .employees {
+            list-style: none;
+        }
+
+        .employee {
+            padding: 10px;
+            margin-bottom: 7px;
+            background: #eff6ff;
+            border: 1px solid #bfdbfe;
+            border-radius: 6px;
+        }
+
+        .employee.selected {
+            background: #fde68a;
+            border: 2px solid #f59e0b;
+            font-weight: bold;
+        }
+
+        .employee.highlight {
+            background: #dcfce7;
+            border: 2px solid #16a34a;
+            font-weight: bold;
+        }
+
+        .buttons {
+            margin-top: 25px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        button {
+            padding: 11px 17px;
+            border: none;
+            border-radius: 7px;
+            background: #2563eb;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        #reset {
+            background: #dc2626;
+        }
+
+        #result {
+            margin-top: 25px;
+            padding: 20px;
+            background: #f1f5f9;
+            border: 2px solid #cbd5e1;
+            border-radius: 12px;
+        }
+
+        #result h2 {
+            color: #1e3a8a;
+            margin-bottom: 10px;
+        }
+
+        #result p {
+            color: #334155;
+            line-height: 1.7;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="container">
+
+        <h1>Employee Organization Explorer</h1>
+
+        <div class="select-box">
+
+            <label for="employeeSelect">
+                Select Employee:
+            </label>
+
+            <select id="employeeSelect">
+
+                <option value="">-- Select Employee --</option>
+
+                <option value="arun">Arun</option>
+                <option value="priya">Priya</option>
+                <option value="rahul">Rahul</option>
+                <option value="divya">Divya</option>
+
+                <option value="karthik">Karthik</option>
+                <option value="meena">Meena</option>
+                <option value="vijay">Vijay</option>
+
+                <option value="sanjay">Sanjay</option>
+                <option value="keerthi">Keerthi</option>
+                <option value="manoj">Manoj</option>
+
+            </select>
+
+        </div>
+
+
+        <div class="organization">
+
+            <div class="project">
+
+                <h2>Project: Smart Business System</h2>
+
+                <div class="teams">
+
+                    <div class="team">
+
+                        <h3>Development Team</h3>
+
+                        <ul class="employees">
+
+                            <li class="employee" data-name="arun" data-senior="yes">
+                                Arun - Senior Developer
+                            </li>
+
+                            <li class="employee" data-name="priya" data-senior="no">
+                                Priya - Developer
+                            </li>
+
+                            <li class="employee" data-name="rahul" data-senior="no">
+                                Rahul - Tester
+                            </li>
+
+                            <li class="employee" data-name="divya" data-senior="yes">
+                                Divya - Senior Developer
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+
+                    <div class="team">
+
+                        <h3>Design Team</h3>
+
+                        <ul class="employees">
+
+                            <li class="employee" data-name="karthik" data-senior="yes">
+                                Karthik - Senior UI Designer
+                            </li>
+
+                            <li class="employee" data-name="meena" data-senior="no">
+                                Meena - UX Designer
+                            </li>
+
+                            <li class="employee" data-name="vijay" data-senior="no">
+                                Vijay - Graphic Designer
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+
+                    <div class="team">
+
+                        <h3>Testing Team</h3>
+
+                        <ul class="employees">
+
+                            <li class="employee" data-name="sanjay" data-senior="yes">
+                                Sanjay - Senior Tester
+                            </li>
+
+                            <li class="employee" data-name="keerthi" data-senior="no">
+                                Keerthi - QA Engineer
+                            </li>
+
+                            <li class="employee" data-name="manoj" data-senior="no">
+                                Manoj - Tester
+                            </li>
+
+                        </ul>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+        <div class="buttons">
+
+            <button id="parentTeam">
+                Parent Team
+            </button>
+
+            <button id="ancestors">
+                Show All Ancestor
+            </button>
+
+            <button id="projectEmployees">
+                Show Project Employees
+            </button>
+
+            <button id="teammates">
+                Show Teammates
+            </button>
+
+            <button id="senior">
+                Show Senior Employees
+            </button>
+
+            <button id="reset">
+                Reset
+            </button>
+
+        </div>
+
+
+        <div id="result">
+
+            <h2>Result</h2>
+
+            <p>
+                Select an employee and choose an operation.
+            </p>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        $(document).ready(function () {
+
+            var selectedEmployee = null;
+
+
+            // Select Employee
+            $("#employeeSelect").change(function () {
+
+                var name = $(this).val();
+
+                $(".employee").removeClass("selected highlight");
+
+                if (name === "") {
+
+                    selectedEmployee = null;
+
+                    $("#result").html(
+                        "<h2>Result</h2>" +
+                        "<p>Please select an employee.</p>"
+                    );
+
+                    return;
+                }
+
+                selectedEmployee = $('.employee[data-name="' + name + '"]');
+
+                selectedEmployee.addClass("selected");
+
+                $("#result").html(
+                    "<h2>Selected Employee</h2>" +
+                    "<p>" + selectedEmployee.text() + "</p>"
+                );
+
+            });
+
+
+            // Parent Team
+            $("#parentTeam").click(function () {
+
+                if (selectedEmployee === null) {
+
+                    showMessage();
+
+                    return;
+                }
+
+                $(".team").css(
+                    "border",
+                    "2px solid #93c5fd"
+                );
+
+                var team = selectedEmployee.closest(".team");
+
+                team.css(
+                    "border",
+                    "4px solid #f59e0b"
+                );
+
+                var teamName = team.children("h3").text();
+
+                $("#result").html(
+                    "<h2>Parent Team</h2>" +
+                    "<p>" + teamName + "</p>"
+                );
+
+            });
+
+
+            // Show All Ancestor
+            $("#ancestors").click(function () {
+
+                if (selectedEmployee === null) {
+
+                    showMessage();
+
+                    return;
+                }
+
+                var project = selectedEmployee
+                    .parents(".project");
+
+                var team = selectedEmployee
+                    .closest(".team");
+
+                $(".project").css(
+                    "border",
+                    "2px solid #2563eb"
+                );
+
+                $(".team").css(
+                    "border",
+                    "2px solid #93c5fd"
+                );
+
+                project.css(
+                    "border",
+                    "4px solid #7c3aed"
+                );
+
+                team.css(
+                    "border",
+                    "4px solid #f59e0b"
+                );
+
+                $("#result").html(
+                    "<h2>All Ancestors</h2>" +
+                    "<p>" +
+                    "Employee → Team: " +
+                    team.children("h3").text() +
+                    "<br>" +
+                    "Team → Project: " +
+                    project.children("h2").text() +
+                    "</p>"
+                );
+
+            });
+
+
+            // Show Project Employees
+            $("#projectEmployees").click(function () {
+
+                if (selectedEmployee === null) {
+
+                    showMessage();
+
+                    return;
+                }
+
+                var project = selectedEmployee.closest(".project");
+
+                var employees = project.find(".employee");
+
+                $(".employee").removeClass("highlight");
+
+                employees.addClass("highlight");
+
+                $("#result").html(
+                    "<h2>Project Employees</h2>" +
+                    "<p>Total Employees: " +
+                    employees.length +
+                    "</p>"
+                );
+
+            });
+
+
+            // Show Teammates
+            $("#teammates").click(function () {
+
+                if (selectedEmployee === null) {
+
+                    showMessage();
+
+                    return;
+                }
+
+                var teammates = selectedEmployee
+                    .siblings(".employee");
+
+                $(".employee").removeClass("highlight");
+
+                teammates.addClass("highlight");
+
+                selectedEmployee.addClass("selected");
+
+                $("#result").html(
+                    "<h2>Teammates</h2>" +
+                    "<p>" +
+                    "Number of teammates: " +
+                    teammates.length +
+                    "</p>"
+                );
+
+            });
+
+
+            // Show Senior Employees
+            $("#senior").click(function () {
+
+                if (selectedEmployee === null) {
+
+                    showMessage();
+
+                    return;
+                }
+
+                var seniors = selectedEmployee
+                    .closest(".project")
+                    .find('.employee[data-senior="yes"]');
+
+                $(".employee").removeClass("highlight");
+
+                seniors.addClass("highlight");
+
+                selectedEmployee.addClass("selected");
+
+                $("#result").html(
+                    "<h2>Senior Employees</h2>" +
+                    "<p>Senior Employees in the project: " +
+                    seniors.length +
+                    "</p>"
+                );
+
+            });
+
+
+            // Reset
+            $("#reset").click(function () {
+
+                $("#employeeSelect").val("");
+
+                $(".employee").removeClass(
+                    "selected highlight"
+                );
+
+                $(".team").css(
+                    "border",
+                    "2px solid #93c5fd"
+                );
+
+                $(".project").css(
+                    "border",
+                    "2px solid #2563eb"
+                );
+
+                selectedEmployee = null;
+
+                $("#result").html(
+                    "<h2>Result</h2>" +
+                    "<p>Select an employee and choose an operation.</p>"
+                );
+
+            });
+
+
+            function showMessage() {
+
+                $("#result").html(
+                    "<h2>Result</h2>" +
+                    "<p>Please select an employee first.</p>"
+                );
+
+            }
+
+        });
+
+    </script>
+
+</body>
+
+</html>
